@@ -72,7 +72,7 @@ def validate_vin(vin):
 class VinToolApp:
     def __init__(self, root):
         self.root = root
-        self.root.title('绿本 VIN 识别 + 校验工具')
+        self.root.title('绿本 VIN 识别 + 校验工具 v0.5')
         self.root.geometry('680x520')
         self.root.resizable(False, False)
         self.root.update_idletasks()
@@ -81,6 +81,18 @@ class VinToolApp:
         x = (self.root.winfo_screenwidth() - w) // 2
         y = (self.root.winfo_screenheight() - h) // 2
         self.root.geometry(f'+{x}+{y}')
+
+        # 设置窗口图标（支持 PyInstaller 打包路径）
+        if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+            ico_base = sys._MEIPASS
+        else:
+            ico_base = os.path.dirname(__file__)
+        ico_path = os.path.join(ico_base, 'ANTU_ICO.ico')
+        if os.path.isfile(ico_path):
+            try:
+                self.root.iconbitmap(ico_path)
+            except Exception:
+                pass
 
         self.ocr_running = False
         self._stop_ocr = False
@@ -162,9 +174,9 @@ class VinToolApp:
         self.result_text.insert(tk.END, '输入VIN或打开文件识别后，点击"校验"查看结果\n\n', 'header')
         self.result_text.insert(tk.END, '操作说明:\n', 'label')
         self.result_text.insert(tk.END, '  📂 打开文件 → 选择PDF/JPG/PNG\n')
-        self.result_text.insert(tk.END, '  🔍 识别VIN  → 百度OCR自动识别\n')
+        self.result_text.insert(tk.END, '  🔍 识别VIN  → OCR识别VIN\n')
         self.result_text.insert(tk.END, '  ⏹ 停止      → 识别过程中可随时取消\n')
-        self.result_text.insert(tk.END, '  ✅ 校验      → 校验VIN第9位校验码\n')
+        self.result_text.insert(tk.END, '  ✅ 校验      → 校验VIN\n')
         self.result_text.insert(tk.END, '  也可直接在输入框内手动输入VIN\n')
 
     def _auto_upper(self, event):
