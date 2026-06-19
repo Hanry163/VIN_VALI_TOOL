@@ -1,0 +1,8 @@
+# Build artifacts
+dist/
+build/
+*.spec
+__pycache__/
+*.pyc
+# Exe is the deliverable, not tracked in git
+绿本VIN工具.exe
